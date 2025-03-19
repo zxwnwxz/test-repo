@@ -45,6 +45,17 @@ class UFO(GameSprite):
             self.rect.y = randint(-100, -50)
             self.rect.x = randint(0, width - self.image.get_width())
 
+class UFO2(GameSprite):
+    def update(self):
+        global lost
+        self.rect.y += self.speed
+        if self.rect.y > height:
+            lost += 1
+            self.rect.y = randint(-100, -50)
+            self.rect.x = randint(0, width - self.image.get_width())
+
+
+
 
 
 
@@ -54,7 +65,7 @@ width = 800
 height = 700
 
 window = display.set_mode((width, height))
-display.set_caption('Flight-Space')
+display.set_caption('Arcade flight-Space')
 background = transform.scale(image.load('3F3F3F.png'), (width, height))
 
 clock = time.Clock()
@@ -62,9 +73,10 @@ FPS = 60
 
 font.init()
 font1 = font.Font(None, 72)
-font2 = font.Font(None, 24)
-win_text = font1.render('You win', True, (0, 128, 0))
-lose_text = font1.render('You lose', True, (128, 0, 0))
+font2 = font.Font(None, 34)
+win_text = font1.render('Как ты прошёл это?', True, (0, 128, 0))
+lose_text = font1.render('Ты проиграл.', True, (128, 0, 0))
+
 
 lost = 0
 
@@ -73,9 +85,14 @@ player = Player('Space_shuttle.png', 300, 400, 5, 75, 100)
 
 
 monsters = sprite.Group()
-for i in range(10):
+for i in range(8):
     ufo = UFO('Meteor.png', randint(0, 450), randint(-100, -50), 3, 40, 100 )
     monsters.add(ufo)
+
+onsters = sprite.Group()
+for i in range(2):
+    ufo2 = UFO2('png.png', randint(0, 450), randint(-100, -50), 3, 140, 100 )
+    onsters.add(ufo2)
 
 
 #---------------------------------------------------------------------------------------
@@ -95,14 +112,22 @@ while game:
         monsters.draw(window)
 
 
+        lost_text = font2.render('Твой рекорд: ' + str(lost) + ' км.', True, (255, 255, 255))
+        window.blit(lost_text, (10, 10))
+            
 
-        if sprite.spritecollide(player, monsters, False):
-            window.blit(lose_text, (300, 200))
+        if sprite.spritecollide(player, monsters, False) or sprite.spritecollide(player, onsters, False):
+            window.blit(lose_text, (230, 200))
             finish = True
 
-        if lost >= 150:
+        if lost >= 100000:
             window.blit(win_text, (350, 200))
             finish = True
+
+        if lost >= 40:
+            onsters.update()
+            onsters.draw(window)
+
 
     display.update()
     clock.tick(FPS)
