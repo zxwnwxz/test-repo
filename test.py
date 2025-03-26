@@ -78,6 +78,11 @@ win_text = font1.render('Как ты прошёл это?', True, (0, 128, 0))
 lose_text = font1.render('Ты проиграл.', True, (128, 0, 0))
 
 
+mixer.init()
+mixer.music.load('kosmos.mp3')
+mixer.music.play()
+
+
 lost = 0
 
 player = Player('Space_shuttle.png', 300, 400, 5, 75, 100)
@@ -103,6 +108,9 @@ while game:
     for e in event.get():
         if e.type == QUIT:
             game = False
+    
+    if finish != False:
+        mixer.music.stop()
         
     if finish != True:
         window.blit(background, (0, 0))
@@ -112,7 +120,7 @@ while game:
         monsters.draw(window)
 
 
-        lost_text = font2.render('Твой рекорд: ' + str(lost) + ' км.', True, (255, 255, 255))
+        lost_text = font2.render('Ты преодалел: ' + str(lost) + ' км.', True, (255, 255, 255))
         window.blit(lost_text, (10, 10))
             
 
@@ -127,6 +135,12 @@ while game:
         if lost >= 40:
             onsters.update()
             onsters.draw(window)
+
+        if lost == 79:
+            background = transform.scale(image.load('3fff.png'), (width, height))
+
+        if lost == 119:
+            background = transform.scale(image.load('4fff.png'), (width, height))
 
 
     display.update()
