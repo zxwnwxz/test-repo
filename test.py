@@ -74,7 +74,7 @@ FPS = 60
 font.init()
 font1 = font.Font(None, 72)
 font2 = font.Font(None, 34)
-win_text = font1.render('Как ты прошёл это?', True, (0, 128, 0))
+win_text = font1.render('Поздравляю!', True, (0, 128, 0))
 lose_text = font1.render('Ты проиграл.', True, (128, 0, 0))
 
 
@@ -128,7 +128,7 @@ while game:
             window.blit(lose_text, (230, 200))
             finish = True
 
-        if lost >= 100000:
+        if lost >= 1000:
             window.blit(win_text, (350, 200))
             finish = True
 
@@ -136,10 +136,10 @@ while game:
             onsters.update()
             onsters.draw(window)
 
-        if lost == 79:
+        if lost == 99:
             background = transform.scale(image.load('3fff.png'), (width, height))
 
-        if lost == 119:
+        if lost == 199:
             background = transform.scale(image.load('4fff.png'), (width, height))
 
 
